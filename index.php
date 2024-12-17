@@ -1,6 +1,10 @@
 <?php # Фотоальбом с возможностью закачки.
 header('Content-Type: text/html; charset=utf-8');
 $imgDir = "images"; // каталог для хранения изображений
+if (isset($_REQUEST ['delete'])) {
+	$photo_to_delete = $_REQUEST ['url'];
+	$status = unlink($photo_to_delete) or exit("Невозможно удалить файл");
+}
 if (isset($_REQUEST['doUpload'])) { // Проверяем, нажата ли кнопка добавления фотографии,
     if (!file_exists($imgDir)) {
         mkdir($imgDir, 0777);
@@ -9,6 +13,13 @@ if (isset($_REQUEST['doUpload'])) { // Проверяем, нажата ли к�
 
     $data = $_FILES['file'];
     $tmp = $data['tmp_name'];
+
+
+
+	
+
+
+
 
     if (file_exists($tmp)) { // Проверяем, принят ли файл,
         $info = getimagesize($_FILES['file']['tmp_name']); //Функция вернет размер изображения, тип файла, height, width, а также тип содержимого HTTP
@@ -49,6 +60,9 @@ krsort($photos);
 
 // print_r($photos);
 // Страница:
+
+
+
 ?>
 
 <body>
@@ -57,19 +71,18 @@ krsort($photos);
         <input type="submit" name="doUpload" value="закачать новую фотографию">
         <hr>
     </form>
-
-    <?php foreach($photos as $n=>$img) {?>
     <div class="photo">
+    <?php foreach($photos as $n=>$img) {
+		?>
+     <form action="<?php echo $_SERVER['SCRIPT_NAME'] ?>" method="POST" enctype="multipart/form-data" class="photo"></form>
         <img src="<?php echo $img['url'] ?>" <?php echo $img['wh']?>
             alt="Дoбaвлeнa <?php echo date("d.m.Y H:i:s", $img['time'])?>"> <br>
+			
         <p><?php echo date("d.m.Y H:i:s", $img['time'])?></p>
-		<input type="hidden" value="<?php echo $img['url']; ?>" name="url">
-<input type="submit" name="delete" value="Удалить">
+		<input type="hidden" value="<?php echo $img['url'] ?>" name="url">
+<input type="submit" name="delete" value="delete ">
     </div>
-	if (isset($_REQUEST ['delete'])) {
-    $photo_to_delete = $_REQUEST ['url'];
-    $status = unlink($photo_to_delete) or exit("Невозможно удалить файл");
-}
-    <?php }?>
+	
+    <?php  }?>
 
 </body>

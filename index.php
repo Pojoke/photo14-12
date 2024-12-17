@@ -74,14 +74,14 @@ krsort($photos);
     <div class="photo">
     <?php foreach($photos as $n=>$img) {
 		?>
-     <form action="<?php echo $_SERVER['SCRIPT_NAME'] ?>" method="POST" enctype="multipart/form-data" class="photo_items"></form>
+     <form action="<?php echo $_SERVER['SCRIPT_NAME'] ?>" method="POST" enctype="multipart/form-data" class="photo_items">
         <img src="<?php echo $img['url'] ?>" id="<?php $img['time']?>" <?php echo $img['wh'] ?>
             alt="Дoбaвлeнa <?php echo date("d.m.Y H:i:s", $img['time'])?>"> <br>
 			
         <p><?php echo date("d.m.Y H:i:s", $img['time'])?></p>
 		<input type="hidden" value="<?php echo $img['url'] ?>" name="url">
 <input type="submit" name="delete" value="delete ">
-   
+</form>
 	
     <?php  }?>
     </div>
